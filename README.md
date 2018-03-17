@@ -8,6 +8,14 @@
 
 [Latest stable release](https://github.com/SDLash3D/cs16-client/releases/latest)
 
+## PSVita port
+
+WARNING: The Vita port is in its early stages. Expect glitches and crashes.
+
+1. Ensure that you have VitaSDK installed and in your PATH.
+2. `make -f Makefile.vita`
+3. Copy `client.suprx` to `cstrike/cl_dlls`.
+
 ## How to run
 
 **Install**:
