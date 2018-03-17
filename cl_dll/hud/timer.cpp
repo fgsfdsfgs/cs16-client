@@ -65,8 +65,8 @@ int CHudTimer::Draw( float fTime )
 		return 1;
 	int r, g, b;
 	// time must be positive
-	int minutes = max( 0, (int)( m_iTime + m_fStartTime - gHUD.m_flTime ) / 60);
-	int seconds = max( 0, (int)( m_iTime + m_fStartTime - gHUD.m_flTime ) - (minutes * 60));
+	int minutes = mymax( 0, (int)( m_iTime + m_fStartTime - gHUD.m_flTime ) / 60);
+	int seconds = mymax( 0, (int)( m_iTime + m_fStartTime - gHUD.m_flTime ) - (minutes * 60));
 
 	if( minutes * 60 + seconds > 20 )
 	{

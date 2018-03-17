@@ -88,7 +88,7 @@ int CHudBattery::Draw( float flTime )
 	rc = m_hEmpty[m_enArmorType].rect;
 
 	// battery can go from 0 to 100 so * 0.01 goes from 0 to 1
-	rc.top += m_iHeight * ((float)( 100 - ( min( 100, m_iBat ))) * 0.01f );
+	rc.top += m_iHeight * ((float)( 100 - ( mymin( 100, m_iBat ))) * 0.01f );
 
 	DrawUtils::UnpackRGB( r, g, b, RGB_YELLOWISH );
 

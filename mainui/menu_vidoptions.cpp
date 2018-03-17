@@ -141,7 +141,7 @@ static void UI_VidOptions_Ownerdraw( void *self )
 		sb_lines = 24;	// no inventory
 	else sb_lines = 48;
 
-	size = min( viewsize, 100 );
+	size = mymin( viewsize, 100 );
 
 	viewport[2] = item->width * size / 100;
 	viewport[3] = item->height * size / 100;

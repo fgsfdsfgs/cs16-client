@@ -298,8 +298,8 @@ void CHudSpectatorGui::CalcAllNeededData( )
 	// time must be positive
 	if( !m_bBombPlanted )
 	{
-		int iMinutes = max( 0, (int)( gHUD.m_Timer.m_iTime + gHUD.m_Timer.m_fStartTime - gHUD.m_flTime ) / 60);
-		int iSeconds = max( 0, (int)( gHUD.m_Timer.m_iTime + gHUD.m_Timer.m_fStartTime - gHUD.m_flTime ) - (iMinutes * 60));
+		int iMinutes = mymax( 0, (int)( gHUD.m_Timer.m_iTime + gHUD.m_Timer.m_fStartTime - gHUD.m_flTime ) / 60);
+		int iSeconds = mymax( 0, (int)( gHUD.m_Timer.m_iTime + gHUD.m_Timer.m_fStartTime - gHUD.m_flTime ) - (iMinutes * 60));
 
 		sprintf( label.m_szTimer, "%i:%i", iMinutes, iSeconds );
 	}

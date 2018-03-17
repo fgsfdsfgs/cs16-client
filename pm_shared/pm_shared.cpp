@@ -15,11 +15,11 @@
 #include "com_model.h"
 
 #ifndef min
-#define min(a, b) ((a) < (b) ? (a) : (b))
+#define mymin(a, b) ((a) < (b) ? (a) : (b))
 #endif
 
 #ifndef max
-#define max(a, b) ((a) > (b) ? (a) : (b))
+#define mymax(a, b) ((a) > (b) ? (a) : (b))
 #endif
 
 #ifndef FALSE
@@ -158,7 +158,7 @@ void PM_InitTextureTypes()
 			continue;
 
 		// null-terminate name and save in sentences array
-		j = min(j, CBTEXTURENAMEMAX - 1 + i);
+		j = mymin(j, CBTEXTURENAMEMAX - 1 + i);
 		buffer[j] = '\0';
 
 		strcpy(&(pm_grgszTextureName[pm_gcTextures++][0]), &(buffer[i]));
@@ -1876,7 +1876,7 @@ void PM_Duck()
 			pmove->bInDuck = true;
 		}
 
-		float time = max(0.0, (1.0 - pmove->flDuckTime / 1000.0));
+		float time = mymax(0.0, (1.0 - pmove->flDuckTime / 1000.0));
 
 		if (pmove->bInDuck)
 		{
@@ -2660,7 +2660,7 @@ void PM_DropPunchAngle(vec_t *punchangle)
 
 	len = VectorNormalize(punchangle);
 	len -= (10.0 + len * 0.5) * pmove->frametime;
-	len = max(len, 0.0f);
+	len = mymax(len, 0.0f);
 
 	VectorScale(punchangle, len, punchangle);
 }
@@ -2677,7 +2677,7 @@ void PM_CheckParamters()
 
 	if (maxspeed != 0.0f)
 	{
-		pmove->maxspeed = min(maxspeed, (float)pmove->maxspeed);
+		pmove->maxspeed = mymin(maxspeed, (float)pmove->maxspeed);
 	}
 
 	if (spd != 0.0f && spd > (float)pmove->maxspeed)

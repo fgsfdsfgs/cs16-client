@@ -536,7 +536,7 @@ int CHudScoreboard :: MsgFunc_TeamInfo( const char *pszName, int iSize, void *pb
 			}
 
 
-			m_iNumTeams = max( j, m_iNumTeams );
+			m_iNumTeams = mymax( j, m_iNumTeams );
 
 			strncpy( g_TeamInfo[j].name, g_PlayerExtraInfo[i].teamname, MAX_TEAM_NAME );
 			g_TeamInfo[j].teamnumber = g_PlayerExtraInfo[i].teamnumber;

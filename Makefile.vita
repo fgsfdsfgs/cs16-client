@@ -1,0 +1,7 @@
+all: client.suprx
+
+client.suprx:
+	$(MAKE) -C cl_dll -f Makefile.vita
+
+clean:
+	$(MAKE) -C cl_dll -f Makefile.vita clean

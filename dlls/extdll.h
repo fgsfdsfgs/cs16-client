@@ -60,10 +60,10 @@ typedef int BOOL;
 #include "math.h"
 
 #ifndef min
-#define min(a,b)  (((a) < (b)) ? (a) : (b))
+#define mymin(a,b)  (((a) < (b)) ? (a) : (b))
 #endif
 #ifndef max
-#define max(a,b)  (((a) > (b)) ? (a) : (b))
+#define mymax(a,b)  (((a) > (b)) ? (a) : (b))
 #endif
 
 // Header file containing definition of globalvars_t and entvars_t

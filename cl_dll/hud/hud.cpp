@@ -302,11 +302,11 @@ void CHud :: VidInit( void )
 	// assume cs16-client is launched in landscape mode
 	// must be only TrueWidth, but due to bug game may sometime rotate to portait mode
 	// calc scale depending on max side
-	float maxScale = (float)max( TrueWidth, TrueHeight ) / 640.0f;
+	float maxScale = (float)mymax( TrueWidth, TrueHeight ) / 640.0f;
 	
 	// REMOVE LATER
 	float currentScale = CVAR_GET_FLOAT("hud_scale");
-	float invalidScale = (float)min( TrueWidth, TrueHeight ) / 640.0f;
+	float invalidScale = (float)mymin( TrueWidth, TrueHeight ) / 640.0f;
 	// REMOVE LATER
 	
 	if( currentScale > maxScale ||

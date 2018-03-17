@@ -25,7 +25,7 @@ GNU General Public License for more details.
 #include <ctype.h>
 
 #define bound( min, num, max )	((num) >= (min) ? ((num) < (max) ? (num) : (max)) : (min))
-#define min( a, b )	(((a) < (b)) ? (a) : (b))
+#define mymin( a, b )	(((a) < (b)) ? (a) : (b))
 
 #ifndef FALSE
 #define FALSE	0

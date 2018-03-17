@@ -231,7 +231,7 @@ int CHudStatusBar :: Draw( float fTime )
 		if ( i == STATUSBAR_ID_LINE &&
 			 hud_centerid->value != 0.0f )
 		{
-			x = max( 0, max(2, (ScreenWidth - TextWidth)) / 2 );
+			x = mymax( 0, mymax(2, (ScreenWidth - TextWidth)) / 2 );
 			y = (ScreenHeight / 2) + (TextHeight * hud_centerid->value );
 		}
 

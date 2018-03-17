@@ -24,15 +24,13 @@
 #include "con_nprint.h"
 #include "triangleapi.h"
 #include "parsemsg.h"
-#include <new>
-
 
 #define DRIPSPEED    900		// speed of raindrips (pixel per secs)
 #define SNOWSPEED    200		// speed of snowflakes
 #define SNOWFADEDIST 80
 
-#define MAXDRIPS 2000	// max raindrops
-#define MAXFX    3000	// max effects
+#define MAXDRIPS 128	// max raindrops
+#define MAXFX    128	// max effects
 
 #define DRIP_SPRITE_HALFHEIGHT 64
 #define DRIP_SPRITE_HALFWIDTH  1
@@ -78,6 +76,8 @@ enum
 
 struct cl_drip_t
 {
+	uint8_t used;
+
 	Vector		origin;
 	float		birthTime;
 	float		minHeight;	// minimal height to kill raindrop
@@ -92,6 +92,8 @@ struct cl_drip_t
 
 struct cl_rainfx_t
 {
+	uint8_t used;
+
 	Vector		origin;
 	float		birthTime;
 	float		life;
@@ -107,6 +109,41 @@ struct cl_rainfx_t
 #ifdef _DEBUG
 cvar_t *debug_rain = NULL;
 #endif
+
+static cl_drip_t drip_pool[MAXDRIPS];
+static cl_rainfx_t fx_pool[MAXFX];
+
+static cl_drip_t *AllocDrip(void)
+{
+  for (int i = 0; i < MAXDRIPS; ++i)
+    if (!drip_pool[i].used)
+    {
+      drip_pool[i].used = 1;
+      return drip_pool + i;
+    }
+  return NULL;
+}
+
+static cl_rainfx_t *AllocFX(void)
+{
+  for (int i = 0; i < MAXFX; ++i)
+    if (!fx_pool[i].used)
+    {
+      fx_pool[i].used = 1;
+      return fx_pool + i;
+    }
+  return NULL;
+}
+
+static inline void DeleteDrip(cl_drip_t *d)
+{
+  d->used = 0;
+}
+
+static inline void DeleteFX(cl_rainfx_t *fx)
+{
+  fx->used = 0;
+}
 
 
 /*
@@ -125,7 +162,7 @@ void LandingEffect( cl_drip_t *drip )
 		return;
 	}
 
-	cl_rainfx_t *newFX = new(std::nothrow) cl_rainfx_t;
+	cl_rainfx_t *newFX = AllocFX();
 	if( !newFX )
 	{
 		gEngfuncs.Con_Printf( "Rain error: failed to allocate FX object!\n");
@@ -218,7 +255,7 @@ void ProcessRain( void )
 			curDrip->p_Prev->p_Next = curDrip->p_Next; // link chain
 			if( nextDrip != NULL )
 				nextDrip->p_Prev = curDrip->p_Prev;
-			delete curDrip;
+			DeleteDrip(curDrip);
 
 			Rain.dripcounter--;
 		}
@@ -306,6 +343,8 @@ void ProcessRain( void )
 				deathHeight = pmtrace.endpos[2];
 			}
 
+			if( Rain.dripcounter >= MAXDRIPS ) continue;
+
 			// just in case..
 			if (deathHeight > vecStart[2])
 			{
@@ -313,7 +352,7 @@ void ProcessRain( void )
 				continue;
 			}
 
-			cl_drip_t *newClDrip = new(std::nothrow) cl_drip_t;
+			cl_drip_t *newClDrip = AllocDrip();
 			if( !newClDrip )
 			{
 				Rain.dripsPerSecond = 0; // disable rain
@@ -412,7 +451,7 @@ void ProcessFXObjects( void )
 			if( nextFX )
 				nextFX->p_Prev = curFX->p_Prev;
 
-			delete curFX;
+			DeleteFX(curFX);
 			Rain.fxcounter--;
 		}
 	}
@@ -432,7 +471,7 @@ void ResetRain( void )
 		 curDrip = FirstChainDrip.p_Next, Rain.dripcounter-- )
 	{
 		FirstChainDrip.p_Next = curDrip->p_Next;
-		delete curDrip;
+		DeleteDrip(curDrip);
 	}
 
 	// delete all FX objects
@@ -440,7 +479,7 @@ void ResetRain( void )
 		 curFX = FirstChainFX.p_Next, Rain.fxcounter-- )
 	{
 		FirstChainFX.p_Next = curFX->p_Next;
-		delete curFX;
+		DeleteFX(curFX);
 	}
 
 	InitRain();

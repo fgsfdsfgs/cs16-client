@@ -43,11 +43,11 @@
 #include "pm_shared.h"
 
 #ifndef min
-#define min(a,b)  (((a) < (b)) ? (a) : (b))
+#define mymin(a,b)  (((a) < (b)) ? (a) : (b))
 #endif
 
 #ifndef max
-#define max(a,b)  (((a) > (b)) ? (a) : (b))
+#define mymax(a,b)  (((a) > (b)) ? (a) : (b))
 #endif
 
 extern globalvars_t *gpGlobals;
@@ -241,7 +241,7 @@ BOOL CBasePlayerWeapon :: DefaultReload( int iClipSize, int iAnim, float fDelay,
 	if (m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] <= 0)
 		return FALSE;
 
-	int j = min(iClipSize - m_iClip, player.m_rgAmmo[m_iPrimaryAmmoType]);
+	int j = mymin(iClipSize - m_iClip, player.m_rgAmmo[m_iPrimaryAmmoType]);
 
 	if (j == 0)
 		return FALSE;
@@ -598,7 +598,7 @@ void CBasePlayerWeapon::ItemPostFrame( void )
 
 	if ((m_fInReload) && m_pPlayer->m_flNextAttack <= UTIL_WeaponTimeBase())
 	{
-		int j = min(iMaxClip() - m_iClip, m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType]);
+		int j = mymin(iMaxClip() - m_iClip, m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType]);
 
 		m_iClip += j;
 		m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] -= j;
