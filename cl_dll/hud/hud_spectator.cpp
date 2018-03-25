@@ -867,7 +867,11 @@ void CHudSpectator::SetModes(int iNewMainMode, int iNewInsetMode)
 		iNewInsetMode = m_pip->value;
 
 	// inset mode is handled only clients side
+#ifdef __vita__
+	m_pip->value = INSET_OFF;
+#else
 	m_pip->value = iNewInsetMode;
+#endif
 	
 	if ( iNewMainMode < OBS_CHASE_LOCKED || iNewMainMode > OBS_MAP_CHASE )
 	{
@@ -1585,8 +1589,12 @@ void CHudSpectator::CheckSettings()
 {
 	// disallow same inset mode as main mode:
 
+#ifdef __vita__
+	m_pip->value = INSET_OFF;
+#else
 	m_pip->value = (int)m_pip->value;
-	
+#endif
+
 	if ( ( g_iUser1 < OBS_MAP_FREE ) && ( m_pip->value == INSET_CHASE_FREE || m_pip->value == INSET_IN_EYE ) )
 	{
 		// otherwise both would show in World picures

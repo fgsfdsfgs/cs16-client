@@ -155,6 +155,9 @@ int CHudSpectatorGui::Draw( float flTime )
 	CalcAllNeededData( );
 
 	int r = 255, g = 140, b = 0;
+#ifdef __vita__
+	gHUD.m_Spectator.m_pip->value = INSET_OFF;
+#endif
 
 	// at first, draw these silly black bars
 	int startpos = 0;
