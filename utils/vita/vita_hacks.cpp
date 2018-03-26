@@ -67,12 +67,13 @@ int module_exit( )
 void _start() __attribute__ ((weak, alias ("module_start")));
 int module_start( SceSize argc, void *args )
 {
-	_init_vita_newlib( );
-	__libc_init_array( );
-
 	modarg_t *arg = *(modarg_t **)args;
 	arg->exports = vita_exports;
 	g_engsysfuncs = arg->imports;
+
+	_init_vita_newlib( );
+	__libc_init_array( );
+
 	return SCE_KERNEL_START_SUCCESS;
 }
 
