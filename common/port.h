@@ -25,7 +25,12 @@ GNU General Public License for more details.
 
 #ifndef _WIN32
     #include <limits.h>
-    #include <dlfcn.h>
+		#ifdef __SWITCH__
+			#define SOLDER_LIBDL_COMPAT
+			#include <solder.h>
+		#else
+    	#include <dlfcn.h>
+		#endif
 
     #ifdef __APPLE__
 		#include <sys/syslimits.h>
