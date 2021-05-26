@@ -455,10 +455,14 @@ public:
 	CHudUserCmd(OldStyleMenuClose);
 	CHudUserCmd(OldStyleMenuOpen);
 	CHudUserCmd(ShowVGUIMenu);
+	CHudUserCmd(OldStyleMenuConfirm);
 
 	void ShowVGUIMenu( int menuType ); // cs16client extension
 
 	void SelectMenuItem( int menu_item );
+
+	void AdvanceSelection( int dir );
+	void SelectHighlight( void );
 
 	int m_fMenuDisplayed;
 	bool m_bAllowSpec;
@@ -466,6 +470,7 @@ public:
 	int m_bitsValidSlots;
 	float m_flShutoffTime;
 	int m_fWaitingForMore;
+	int m_iHighlight;
 
 };
 

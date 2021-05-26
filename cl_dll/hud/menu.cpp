@@ -29,6 +29,12 @@
 
 #define MAX_MENU_STRING	512
 
+#ifdef __SWITCH__
+#define DEFAULT_EXTENDED_MENUS "0"
+#else
+#define DEFAULT_EXTENDED_MENUS "1"
+#endif
+
 char g_szMenuString[MAX_MENU_STRING];
 char g_szPrelocalisedMenuString[MAX_MENU_STRING];
 
@@ -42,6 +48,7 @@ DECLARE_MESSAGE( m_Menu, AllowSpec )
 DECLARE_COMMAND( m_Menu, OldStyleMenuOpen )
 DECLARE_COMMAND( m_Menu, OldStyleMenuClose )
 DECLARE_COMMAND( m_Menu, ShowVGUIMenu )
+DECLARE_COMMAND( m_Menu, OldStyleMenuConfirm )
 
 int CHudMenu :: Init( void )
 {
@@ -54,8 +61,9 @@ int CHudMenu :: Init( void )
 	HOOK_COMMAND( "client_buy_open", OldStyleMenuOpen );
 	HOOK_COMMAND( "client_buy_close", OldStyleMenuClose );
 	HOOK_COMMAND( "showvguimenu", ShowVGUIMenu );
+	HOOK_COMMAND( "menuconfirm", OldStyleMenuConfirm );
 
-	_extended_menus = CVAR_CREATE("_extended_menus", "1", FCVAR_ARCHIVE);
+	_extended_menus = CVAR_CREATE("_extended_menus", DEFAULT_EXTENDED_MENUS, FCVAR_ARCHIVE);
 
 	InitHUDData();
 
@@ -125,7 +133,12 @@ int CHudMenu :: Draw( float flTime )
 		if ( g_szMenuString[i] == '\n' )
 			i++;
 	}
-	
+
+	// there seems to be no direct slot<->string mapping, so just draw the current index
+	char selstr[64];
+	snprintf( selstr, sizeof( selstr ), "SELECT >> %d", m_iHighlight == 9 ? 0 : m_iHighlight + 1 );
+	DrawUtils::DrawHudString( x, y + 24, 320, selstr, 255, 127, 127 );
+
 	return 1;
 }
 
@@ -145,6 +158,24 @@ void CHudMenu :: SelectMenuItem( int menu_item )
 	}
 }
 
+void CHudMenu :: AdvanceSelection( int dir )
+{
+	int next_item = m_iHighlight + dir;
+	while ( next_item >= 0 && next_item < 30 )
+	{
+		if ( m_bitsValidSlots & ( 1 << next_item ) )
+		{
+			m_iHighlight = next_item;
+			break;
+		}
+		next_item += dir;
+	}
+}
+
+void CHudMenu :: SelectHighlight( void )
+{
+	SelectMenuItem( m_iHighlight + 1 );
+}
 
 // Message handler for ShowMenu message
 // takes four values:
@@ -228,6 +259,9 @@ int CHudMenu :: MsgFunc_ShowMenu( const char *pszName, int iSize, void *pbuf )
 	m_iFlags |= HUD_DRAW;
 
 	m_fWaitingForMore = NeedMore;
+
+	m_iHighlight = -1;
+	AdvanceSelection( 1 ); // highlight first valid choice
 
 	return 1;
 }
@@ -358,4 +392,10 @@ void CHudMenu::UserCmd_ShowVGUIMenu()
 
 	int menuType = atoi(gEngfuncs.Cmd_Argv(1));
 	ShowVGUIMenu(menuType);
+}
+
+void CHudMenu::UserCmd_OldStyleMenuConfirm()
+{
+	if( m_fMenuDisplayed )
+		SelectHighlight();
 }

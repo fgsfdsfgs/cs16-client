@@ -939,6 +939,13 @@ void CHudAmmo::UserCmd_Close(void)
 // Selects the next item in the weapon menu
 void CHudAmmo::UserCmd_NextWeapon(void)
 {
+	// allow menu navigation using next/prev weapon keys
+	if ( gHUD.m_Menu.m_fMenuDisplayed )	
+	{ // menu is overriding slot use commands
+		gHUD.m_Menu.AdvanceSelection( 1 );
+		return;
+	}
+
 	if ( gHUD.m_fPlayerDead || (gHUD.m_iHideHUDDisplay & (HIDEHUD_WEAPONS | HIDEHUD_ALL)) )
 		return;
 
@@ -980,6 +987,13 @@ void CHudAmmo::UserCmd_NextWeapon(void)
 // Selects the previous item in the menu
 void CHudAmmo::UserCmd_PrevWeapon(void)
 {
+	// allow menu navigation using next/prev weapon keys
+	if ( gHUD.m_Menu.m_fMenuDisplayed )	
+	{ // menu is overriding slot use commands
+		gHUD.m_Menu.AdvanceSelection( -1 );
+		return;
+	}
+
 	if ( gHUD.m_fPlayerDead || (gHUD.m_iHideHUDDisplay & (HIDEHUD_WEAPONS | HIDEHUD_ALL)) )
 		return;
 
