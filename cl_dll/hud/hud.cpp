@@ -34,6 +34,11 @@
 
 #include "camera.h"
 
+#ifdef __SWITCH__
+#define DEFAULT_VGUI_MENUS "0"
+#else
+#define DEFAULT_VGUI_MENUS "1"
+#endif
 
 extern client_sprite_t *GetSpriteList(client_sprite_t *pList, const char *psz, int iRes, int iCount);
 
@@ -172,7 +177,7 @@ void CHud :: Init( void )
 
 	HOOK_MESSAGE( ShadowIdx );
 
-	CVAR_CREATE( "_vgui_menus", "1", FCVAR_ARCHIVE | FCVAR_USERINFO );
+	CVAR_CREATE( "_vgui_menus", DEFAULT_VGUI_MENUS, FCVAR_ARCHIVE | FCVAR_USERINFO );
 	CVAR_CREATE( "_cl_autowepswitch", "1", FCVAR_ARCHIVE | FCVAR_USERINFO );
 	CVAR_CREATE( "_ah", "0", FCVAR_ARCHIVE | FCVAR_USERINFO );
 
