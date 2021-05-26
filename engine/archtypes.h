@@ -5,7 +5,7 @@
 #ifndef ARCHTYPES_H
 #define ARCHTYPES_H
 
-#ifdef __x86_64__
+#if defined __x86_64__ || defined __aarch64__
 #define X64BITS
 #endif
 
